@@ -4,12 +4,12 @@ SpendLens is a smart spending tracker that securely connects to your Gmail, find
 
 ## Features
 
-- 🔐 **Secure Google OAuth Login** – Connect your Gmail account safely
-- 📧 **Email Scanning** – Automatically finds transaction-related emails (debit, credit, receipts, invoices, transfers)
-- 💰 **Amount Extraction** – Uses regex to detect amounts in multiple currency formats (₦, $, N, etc.)
-- 📅 **Date & Metadata** – Captures sender, date, and subject for each transaction
-- 🎨 **React Frontend** – Clean, intuitive UI to view your spending data
-- ⚡ **FastAPI Backend** – Fast, modern Python API with Gmail integration
+- **Secure Google OAuth Login** – Connect your Gmail account safely
+- **Email Scanning** – Automatically finds transaction-related emails (debit, credit, receipts, invoices, transfers)
+- **Amount Extraction** – Uses regex to detect amounts in multiple currency formats (₦, $, N, etc.)
+- **Date & Metadata** – Captures sender, date, and subject for each transaction
+- **React Frontend** – Clean, intuitive UI to view your spending data
+- **FastAPI Backend** – Fast, modern Python API with Gmail integration
 
 ## Tech Stack
 
@@ -166,11 +166,11 @@ Regex patterns for amount extraction are in [utils/email_cleaning.py](utils/emai
 
 ## Security Notes
 
-- ✅ OAuth credentials are stored securely using Google's OAuth flow
-- ✅ No passwords are stored—only OAuth tokens
-- ✅ Token is refreshed automatically when expired
-- ⚠️ Keep `credentials.json` and `token.json` private (add to `.gitignore`)
-- ⚠️ For production, use environment variables for sensitive data
+- OAuth credentials are stored securely using Google's OAuth flow
+- No passwords are stored—only OAuth tokens
+- Token is refreshed automatically when expired
+- Keep `credentials.json` and `token.json` private (add to `.gitignore`)
+- For production, use environment variables for sensitive data
 
 ## Troubleshooting
 
@@ -191,12 +191,12 @@ If you see "CORS policy blocked", check that:
 
 ## Future Features
 
-- 📊 Spending analytics and charts
-- 🏷️ Category tagging (Food, Transport, etc.)
-- 📈 Monthly/weekly spending reports
-- 🔔 Budget alerts
-- 💾 Data export (CSV, PDF)
-- 🌐 Multi-currency support
+- Spending analytics and charts
+- Category tagging (Food, Transport, etc.)
+- Monthly/weekly spending reports
+- Budget alerts
+- Data export (CSV, PDF)
+- Multi-currency support
 
 ## License
 
