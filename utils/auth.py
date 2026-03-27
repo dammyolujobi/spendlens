@@ -1,4 +1,5 @@
 import os
+import json
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
@@ -23,7 +24,8 @@ if ENVIRONMENT == "production":
 else:
     REDIRECT_URI = "http://localhost:8000/auth/callback"
 
-CREDENTIALS_FILE = os.getenv("GOOGLE_CLIENT_SECRET", "utils/credentials.json")
+CREDENTIALS_FILE = os.getenv("CREDENTIALS_FILE", "utils/credentials.json")
+GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
 TOKEN_FILE = "token.json"
 ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60
 REFRESH_TOKEN_EXPIRE_MINUTES = 24 * 60 * 7
@@ -32,18 +34,28 @@ JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_REFRESH_SECRET_KEY = os.getenv("JWT_REFRESH_SECRET_KEY")
 
 def get_flow():
-    flow = Flow.from_client_secrets_file(
-        CREDENTIALS_FILE,
-        scopes=SCOPES,
-        redirect_uri=REDIRECT_URI
-    )
+    if GOOGLE_CREDENTIALS_JSON:
+        # Production: load from environment variable
+        credentials_dict = json.loads(GOOGLE_CREDENTIALS_JSON)
+        flow = Flow.from_client_config(
+            credentials_dict,
+            scopes=SCOPES,
+            redirect_uri=REDIRECT_URI
+        )
+    else:
+        # Development: load from file
+        flow = Flow.from_client_secrets_file(
+            CREDENTIALS_FILE,
+            scopes=SCOPES,
+            redirect_uri=REDIRECT_URI
+        )
     return flow
 
 
 def save_token(credentials):
     with open(TOKEN_FILE, "w") as f:
         f.write(credentials.to_json())
-    print("token.json saved successfully")
+   
 
 
 def load_token():
