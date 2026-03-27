@@ -44,7 +44,7 @@ spendlens/
 ### Backend Setup
 
 1. **Clone the repository**
-   ```bash
+    ```bash
    git clone https://github.com/dammyolujobi/spendlens.git
    cd spendlens
    ```

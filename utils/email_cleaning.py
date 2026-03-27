@@ -52,6 +52,6 @@ def extract_amount(text:str):
     
     return None
 
-def extract_subject_name(text:str):
+def extract_subject_name(text:str)->str:
     result = re.findall(r'^[^ ]*',text)
     return result[0]
