@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-ORIGIN = os.getenv("ORIGIN")
+ORIGIN = os.getenv("ORIGIN","http://localhost:3000")
 app = FastAPI()
 app.include_router(gmail.router)
 app.include_router(setup.router)

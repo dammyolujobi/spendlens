@@ -7,16 +7,26 @@ from datetime import datetime, timezone, timedelta
 from jose import jwt
 load_dotenv()
 
+# Environment detection
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")  # Default to development
+
 SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
     "https://www.googleapis.com/auth/gmail.readonly"
 ]
-CREDENTIALS_FILE = os.getenv("CREDENTIALS_FILE")
-REDIRECT_URI = "http://localhost:8000/auth/callback"
-ACCESS_TOKEN_EXPIRE_MINUTES =24 * 60
-REFRESH_TOKEN_EXPIRE_MINUTES = 24 * 60
+
+# Different redirect URIs for each environment
+if ENVIRONMENT == "production":
+    REDIRECT_URI = os.getenv("REDIRECT_URI", "https://your-deployed-domain.com/auth/callback")
+else:
+    REDIRECT_URI = "http://localhost:8000/auth/callback"
+
+CREDENTIALS_FILE = os.getenv("GOOGLE_CLIENT_SECRET", "utils/credentials.json")
+TOKEN_FILE = "token.json"
+ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60
+REFRESH_TOKEN_EXPIRE_MINUTES = 24 * 60 * 7
 ALGORITHM = os.getenv("ALGORITHM")
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 JWT_REFRESH_SECRET_KEY = os.getenv("JWT_REFRESH_SECRET_KEY")
@@ -28,6 +38,35 @@ def get_flow():
         redirect_uri=REDIRECT_URI
     )
     return flow
+
+
+def save_token(credentials):
+    with open(TOKEN_FILE, "w") as f:
+        f.write(credentials.to_json())
+    print("token.json saved successfully")
+
+
+def load_token():
+    if not os.path.exists(TOKEN_FILE):
+        return None
+
+    creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
+
+    # Token is still valid, return it directly
+    if creds.valid:
+        return creds
+
+    # Token expired but we have a refresh token — refresh it silently
+    if creds.expired and creds.refresh_token:
+        try:
+            creds.refresh(Request())
+            save_token(creds)  # Save the refreshed token
+            return creds
+        except Exception as e:
+            print(f"Token refresh failed: {e}")
+            return None
+
+    return None
 
 
 def create_access_token(subject: dict, expires_delta: int = None) -> str:
