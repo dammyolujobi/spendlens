@@ -19,10 +19,7 @@ SCOPES = [
 ]
 
 # Different redirect URIs for each environment
-if ENVIRONMENT == "production":
-    REDIRECT_URI = os.getenv("REDIRECT_URI", "https://your-deployed-domain.com/auth/callback")
-else:
-    REDIRECT_URI = "http://localhost:8000/auth/callback"
+REDIRECT_URI = f"{os.getenv("REDIRECT_URI")}/auth/callback"
 
 CREDENTIALS_FILE = os.getenv("CREDENTIALS_FILE", "utils/credentials.json")
 GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
