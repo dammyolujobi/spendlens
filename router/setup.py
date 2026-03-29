@@ -105,6 +105,6 @@ async def callback(request:Request,code: str, state: str = None,):
 
     jwt_token = create_access_token({"sub":google_id,"email":email,"name":email})
 
-    return RedirectResponse(f"http://localhost:3000?token={jwt_token}")
+    return RedirectResponse(f"{os.getenv("ORIGIN")}?token={jwt_token}")
 
 
